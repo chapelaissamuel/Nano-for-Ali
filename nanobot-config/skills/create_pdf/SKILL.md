@@ -6,7 +6,7 @@ metadata: {"nanobot":{"emoji":"📝","requires":{"bins":["python3"]}}}
 
 # Create PDF
 
-Generate a PDF file from text content and deliver it to the user.
+Generate a PDF file from text content and deliver it directly to the user via the Telegram Bot API.
 
 ## When to use
 
@@ -15,31 +15,29 @@ Use this skill when the user asks to:
 - Send something as a PDF
 - Export content to PDF
 
-## How to generate the PDF
+## How to generate and send the PDF
 
-Run the helper script with the text content as an argument:
-
-```bash
-python3 /app/nanobot-config/skills/create_pdf/scripts/generate_pdf.py "Your full text content here"
-```
-
-Or pipe content into it:
+You need the user's `chat_id` (available from the conversation context) and the text content.
 
 ```bash
-echo "Your text content" | python3 /app/nanobot-config/skills/create_pdf/scripts/generate_pdf.py -
+python3 /app/nanobot-config/skills/create_pdf/scripts/generate_pdf.py "<chat_id>" "Full text content here"
 ```
 
-The script saves the PDF to `/tmp/output.pdf` and prints that path to stdout.
+Or pipe long content:
 
-## Workflow
+```bash
+echo "Your text content" | python3 /app/nanobot-config/skills/create_pdf/scripts/generate_pdf.py "<chat_id>" -
+```
 
-1. Generate the text content based on the user's request.
-2. Run `generate_pdf.py` with that content.
-3. Send `/tmp/output.pdf` to the user via Telegram's send_document function.
-4. Confirm only if the send succeeds. If it fails, say exactly: "Je n'ai pas pu envoyer le fichier. Voici le contenu directement ici : [contenu]"
+The script:
+1. Generates a PDF at `/tmp/output.pdf` using fpdf2
+2. Sends it to the user via `https://api.telegram.org/bot.../sendDocument` (multipart/form-data)
+3. Exits 0 and prints `PDF envoyé ✅` on success
+4. Exits 1 and prints the fallback message on failure
 
 ## Critical Rules
 
-- NEVER say the PDF was sent if the send failed or returned an error.
-- NEVER claim the file exists if the script errored.
-- If `generate_pdf.py` fails, report the error in one sentence and paste the content as plain text instead.
+- NEVER say the PDF was sent if the script exits with code 1 or prints an error.
+- If the script outputs `Je n'ai pas pu envoyer le PDF, voici le contenu :`, relay that message verbatim to the user followed by the text content.
+- NEVER claim the file exists if the script errored during PDF generation.
+- Only confirm success when the script outputs `PDF envoyé ✅`.
