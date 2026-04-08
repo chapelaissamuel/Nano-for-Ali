@@ -18,6 +18,7 @@ import urllib.error
 
 from fpdf import FPDF
 
+TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 OUTPUT_PATH = "/tmp/output.pdf"
 
 
@@ -87,8 +88,7 @@ def main():
         print("Error: no content provided.", file=sys.stderr)
         sys.exit(1)
 
-    token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-    if not token:
+    if not TOKEN:
         print("Error: TELEGRAM_BOT_TOKEN not set.", file=sys.stderr)
         sys.exit(1)
 
@@ -98,7 +98,7 @@ def main():
         print(f"Je n'ai pas pu envoyer le PDF, voici le contenu :\n{text}")
         sys.exit(1)
 
-    success = send_document(chat_id, path, token)
+    success = send_document(chat_id, path, TOKEN)
 
     if success:
         print("PDF envoyé ✅")
