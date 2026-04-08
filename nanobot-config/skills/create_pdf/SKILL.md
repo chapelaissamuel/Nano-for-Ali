@@ -18,45 +18,39 @@ Use this skill when the user asks to:
 ## RÈGLE ABSOLUE — NE JAMAIS DÉVIER
 
 ⛔ INTERDIT : Créer, réécrire ou modifier un script Python. Le script existe déjà.
-⛔ INTERDIT : Utiliser `cat`, `heredoc`, `EOF`, ou tout autre mécanisme pour écrire du code.
-⛔ INTERDIT : Installer des librairies ou vérifier l'environnement.
-✅ OBLIGATOIRE : Appeler UNIQUEMENT la commande ci-dessous, une seule fois.
+⛔ INTERDIT : Utiliser `cat <<<` (herestring) ou tout heredoc inline.
+⛔ INTERDIT : Installer des librairies ou vérifier l'environnement avant d'essayer.
+⛔ INTERDIT : Réessayer en boucle. Une seule tentative.
+✅ OBLIGATOIRE : Utiliser UNIQUEMENT la séquence de 2 commandes ci-dessous, dans l'ordre.
 
-## Commande unique à exécuter
+## Séquence exacte (2 commandes, pas plus)
 
-Pour du contenu court (< 500 caractères) :
+Étape 1 — Écrire le contenu dans un fichier temporaire :
 
-```bash
-python3 /app/nanobot-config/skills/create_pdf/scripts/generate_pdf.py "<chat_id>" "Contenu complet ici"
-```
+printf '%s' "Contenu complet du résumé ici" > /tmp/pdf_content.txt
 
-Pour du contenu long (>= 500 caractères), utiliser le pipe :
+Étape 2 — Appeler le script :
 
-```bash
-cat << 'ENDOFCONTENT' | python3 /app/nanobot-config/skills/create_pdf/scripts/generate_pdf.py "<chat_id>" -
-Contenu complet ici
-ENDOFCONTENT
-```
+python3 /app/nanobot-config/skills/create_pdf/scripts/generate_pdf.py "<chat_id>" - < /tmp/pdf_content.txt
 
-Remplace `<chat_id>` par le chat_id réel de l'utilisateur (disponible dans le contexte de la conversation).
+Remplace <chat_id> par le chat_id réel de l'utilisateur.
+⚠️ printf '%s' gère les sauts de ligne. Ne pas utiliser echo.
 
 ## Ce que fait le script (ne pas reproduire)
 
-Le script `/app/nanobot-config/skills/create_pdf/scripts/generate_pdf.py` :
-1. Génère un PDF dans `/tmp/output.pdf` via fpdf2
-2. L'envoie via `https://api.telegram.org/bot.../sendDocument`
+1. Génère un PDF dans /tmp/output.pdf via fpdf2
+2. L'envoie via Telegram sendDocument
 3. Affiche `PDF envoyé ✅` en cas de succès
-4. Affiche `Je n'ai pas pu envoyer le PDF, voici le contenu :` en cas d'échec et quitte avec code 1
+4. Affiche `Je n'ai pas pu envoyer le PDF, voici le contenu :` en cas d'échec
 
 ## Interprétation du résultat
 
-- Si la sortie contient `PDF envoyé ✅` → confirmer à l'utilisateur que le PDF a été envoyé.
-- Si la sortie contient `Je n'ai pas pu envoyer le PDF` → relayer ce message verbatim suivi du contenu texte.
-- Si code de sortie = 1 → NE PAS dire que le PDF a été envoyé.
+- Sortie contient `PDF envoyé ✅` → confirmer à l'utilisateur.
+- Sortie contient `Je n'ai pas pu envoyer le PDF` → relayer ce message verbatim.
+- Code de sortie = 1 → NE PAS dire que le PDF a été envoyé.
 
 ## Règles critiques
 
-- N'exécuter la commande qu'**une seule fois**. Ne pas réessayer en boucle.
-- Ne JAMAIS affirmer que le PDF a été envoyé si le script retourne une erreur.
-- Ne JAMAIS créer de fichier Python intermédiaire.
-- Si fpdf2 n'est pas installé : `pip install fpdf2 --quiet` puis relancer la commande une seule fois.
+- Une seule tentative. Pas de boucle.
+- Ne jamais créer de fichier Python intermédiaire.
+- Ne jamais affirmer que le PDF a été envoyé si le script retourne une erreur.
