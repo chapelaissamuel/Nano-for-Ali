@@ -1,0 +1,8 @@
+[build]
+builder = "nixpacks"
+buildCommand = "pip install -e nanobot/"
+
+[deploy]
+startCommand = "bash nanobot-config/start.sh"
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
