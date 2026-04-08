@@ -7,7 +7,7 @@
       "contextWindowTokens": 65536,
       "temperature": 0.1,
       "maxToolIterations": 200,
-      "timezone": "UTC"
+      "timezone": "Europe/Paris"
     }
   },
   "providers": {
