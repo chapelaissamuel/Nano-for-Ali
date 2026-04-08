@@ -6,11 +6,9 @@ Usage:
   python3 generate_pdf.py <chat_id> "Text content here"
   echo "Text content" | python3 generate_pdf.py <chat_id> -
 
-Requires: TELEGRAM_BOT_TOKEN environment variable.
 Exit 0 = sent successfully. Exit 1 = failed (fallback message printed to stdout).
 """
 
-import os
 import sys
 import json
 import urllib.request
@@ -18,7 +16,10 @@ import urllib.error
 
 from fpdf import FPDF
 
-TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+config_path = "/app/nanobot-config/config.json"
+with open(config_path) as f:
+    config = json.load(f)
+TOKEN = config["channels"]["telegram"]["token"]
 OUTPUT_PATH = "/tmp/output.pdf"
 
 
