@@ -1,6 +1,6 @@
 [build]
-builder = "nixpacks"
-buildCommand = "pip install -e nanobot/"
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
 
 [deploy]
 startCommand = "bash nanobot-config/start.sh"
