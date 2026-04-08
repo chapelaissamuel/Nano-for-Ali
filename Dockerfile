@@ -1,9 +1,4 @@
 FROM python:3.11-slim
-
-WORKDIR /app
-
 COPY . .
-
-RUN pip3 install -e nanobot/
-
+RUN pip3 install nanobot-ai
 CMD ["bash", "nanobot-config/start.sh"]
