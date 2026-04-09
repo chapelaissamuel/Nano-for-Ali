@@ -1,5 +1,5 @@
 #!/bin/bash
-# Start NanoBot with Telegram + OpenRouter (Claude Sonnet)
+# Start NanoBot with Telegram + OpenRouter (Gemma 4)
 # Make sure OPENROUTER_API_KEY and TELEGRAM_BOT_TOKEN are set before running.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -21,5 +21,5 @@ fi
 echo -n "$TELEGRAM_BOT_TOKEN" > /tmp/.tg_token
 chmod 600 /tmp/.tg_token
 
-echo "Starting NanoBot (Telegram + OpenRouter Claude Sonnet)..."
+echo "Starting NanoBot (Telegram + OpenRouter Gemma 4)..."
 "$PYTHON" -m nanobot gateway --config "$CONFIG"
