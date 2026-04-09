@@ -18,26 +18,31 @@ Use this skill when the user says anything like:
 
 ## Timezone
 
-Default timezone: `Africa/Abidjan` (UTC+0).
-If the user's location implies a different timezone, use the correct IANA name (e.g. `Europe/Paris`, `America/New_York`).
+Default timezone: `Europe/Paris` (matches the bot's configured timezone).
+Override only if the user explicitly specifies a different location.
 
 ## How to schedule
 
 ### One-time reminder (specific time today or a given date)
 
-Compute the full ISO datetime from the current time, then:
+Use `cron_expr` + `tz` for timezone-aware one-time scheduling:
 
 ```
-cron(action="add", message="Rappel : manger", at="2026-04-08T22:59:00", tz="Africa/Abidjan")
+cron(action="add", message="Rappel : manger", cron_expr="59 22 8 4 *", tz="Europe/Paris")
 ```
 
-Note: `tz` cannot be used with `at` — convert the local time to UTC manually when using `at`.
-Use `cron_expr` + `tz` instead for timezone-aware one-time scheduling via a date-specific cron expression.
+Or use `at` with a naive ISO datetime (interpreted in the bot's default timezone, Europe/Paris):
+
+```
+cron(action="add", message="Rappel : manger", at="2026-04-08T22:59:00")
+```
+
+Note: `tz` cannot be combined with `at` — use `cron_expr` + `tz` for explicit timezone control.
 
 ### Recurring reminder (every day at a fixed time)
 
 ```
-cron(action="add", message="Rappel : manger", cron_expr="59 22 * * *", tz="Africa/Abidjan")
+cron(action="add", message="Rappel : manger", cron_expr="59 22 * * *", tz="Europe/Paris")
 ```
 
 ### Relative reminder (in N minutes/hours)
@@ -68,7 +73,7 @@ After successfully scheduling, always confirm with the exact time and message:
 ✅ Rappel programmé pour 22h59 : manger
 ```
 
-Use the user's phrasing for the reminder text. Include the timezone if it differs from the default.
+Use the user's phrasing for the reminder text.
 
 ## At trigger time
 
@@ -80,7 +85,7 @@ When the cron fires, send the reminder message directly to the user. Keep it sho
 
 ## Rules
 
-- Always confirm the scheduled time in the user's local time, not UTC.
+- Always confirm the scheduled time in Europe/Paris local time.
 - If the time has already passed today, schedule for the next occurrence and say so.
 - If scheduling fails, report the error clearly and ask the user to rephrase.
 - NEVER silently drop a reminder request.
