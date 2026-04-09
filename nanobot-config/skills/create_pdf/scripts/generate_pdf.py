@@ -57,14 +57,15 @@ def send_document(chat_id: str, file_path: str, token: str) -> bool:
         method="POST",
     )
 
+    # UNE SEULE tentative. Pas de retry. Telegram Flood Control prevention.
     try:
-        with urllib.request.urlopen(req) as resp:
+        with urllib.request.urlopen(req, timeout=30) as resp:
             result = json.loads(resp.read())
             return result.get("ok", False)
     except urllib.error.HTTPError as e:
         try:
             err = json.loads(e.read())
-            print(f"Telegram error: {err.get('description', e)}", file=sys.stderr)
+            print(f"Telegram error: {err.get('description', str(e))}", file=sys.stderr)
         except Exception:
             print(f"Telegram HTTP error: {e}", file=sys.stderr)
         return False
