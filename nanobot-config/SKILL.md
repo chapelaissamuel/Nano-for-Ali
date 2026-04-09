@@ -23,39 +23,8 @@
 - Go straight to the answer/result
 - If you can't read a file format, just say it in one sentence and ask for the alternative format
 
-## PDF Generation — RÈGLE ABSOLUE
-
-Dès que l'utilisateur demande un PDF (résumé pdf, rapport pdf, envoie en pdf, fais un pdf, etc.) :
+## PDF — Règle absolue
 
 ⛔ NE JAMAIS dire "je ne peux pas générer de PDF nativement"
-⛔ NE JAMAIS expliquer ce que tu vas faire avant de le faire
-⛔ NE JAMAIS écrire un script Python personnalisé
-⛔ NE JAMAIS retry en boucle — une seule tentative
-
-✅ TOUJOURS exécuter cette séquence exacte, immédiatement, sans commentaire :
-
-**Étape 1** — écrire le contenu dans /tmp/pdf_content.txt :
-```
-printf '%s' "CONTENU COMPLET ICI" > /tmp/pdf_content.txt
-```
-
-**Étape 2** — générer le PDF :
-```
-python3 -c "
-from fpdf import FPDF
-pdf = FPDF()
-pdf.add_page()
-pdf.set_font('Helvetica', size=12)
-for line in open('/tmp/pdf_content.txt').readlines():
-    pdf.multi_cell(0, 8, line.strip() or ' ')
-pdf.output('/tmp/output.pdf')
-print('PDF generated')
-"
-```
-
-**Étape 3** — envoyer avec l'outil natif :
-```
-message(content="Voici ton PDF ✅", media=["/tmp/output.pdf"])
-```
-
-Si l'étape 3 échoue : dire exactement "Je n'ai pas pu envoyer le fichier. Voici le contenu directement ici :" suivi du texte.
+⛔ NE JAMAIS expliquer comment tu vas faire — fais-le directement
+✅ Pour tout PDF demandé : utilise le skill `create_pdf` immédiatement
