@@ -1,7 +1,7 @@
 ---
 name: model_switch
 description: Switch the active LLM model at runtime. Supports /model claude and /model gemma commands.
-metadata: {"nanobot":{"emoji":"🔀","always":true,"requires":{"bins":["python3"]}}}
+metadata: {"nanobot":{"emoji":"🔀","requires":{"bins":["python3"]}}}
 ---
 
 # Model Switch
