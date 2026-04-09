@@ -17,21 +17,18 @@ import urllib.error
 
 from fpdf import FPDF
 
-# Railway exposes TELEGRAM_BOT_TOKEN directly as an env var.
-# The config.json value is a literal "${TELEGRAM_BOT_TOKEN}" placeholder
-# that nanobot resolves internally — reading it from JSON gives the raw string.
-# Always prefer the env var; fall back to config only if it looks resolved.
-TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+# nanobot's shell tool strips all env vars from subprocesses (security design).
+# The token is written to /tmp/.tg_token by start.sh at container boot,
+# before nanobot starts — this is the only reliable way to pass it.
+TOKEN = ""
+try:
+    TOKEN = open("/tmp/.tg_token").read().strip()
+except Exception:
+    pass
+
+# Fallback: env var (works when script is run directly, not via nanobot agent)
 if not TOKEN:
-    try:
-        config_path = "/app/nanobot-config/config.json"
-        with open(config_path) as f:
-            _cfg = json.load(f)
-        _raw = _cfg["channels"]["telegram"]["token"]
-        if not _raw.startswith("${"):
-            TOKEN = _raw
-    except Exception:
-        pass
+    TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 OUTPUT_PATH = "/tmp/output.pdf"
 
 
