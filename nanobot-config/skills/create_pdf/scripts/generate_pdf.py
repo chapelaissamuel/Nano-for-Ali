@@ -9,6 +9,7 @@ Usage:
 Exit 0 = sent successfully. Exit 1 = failed (fallback message printed to stdout).
 """
 
+import os
 import sys
 import json
 import urllib.request
@@ -16,10 +17,21 @@ import urllib.error
 
 from fpdf import FPDF
 
-config_path = "/app/nanobot-config/config.json"
-with open(config_path) as f:
-    config = json.load(f)
-TOKEN = config["channels"]["telegram"]["token"]
+# Railway exposes TELEGRAM_BOT_TOKEN directly as an env var.
+# The config.json value is a literal "${TELEGRAM_BOT_TOKEN}" placeholder
+# that nanobot resolves internally — reading it from JSON gives the raw string.
+# Always prefer the env var; fall back to config only if it looks resolved.
+TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+if not TOKEN:
+    try:
+        config_path = "/app/nanobot-config/config.json"
+        with open(config_path) as f:
+            _cfg = json.load(f)
+        _raw = _cfg["channels"]["telegram"]["token"]
+        if not _raw.startswith("${"):
+            TOKEN = _raw
+    except Exception:
+        pass
 OUTPUT_PATH = "/tmp/output.pdf"
 
 
