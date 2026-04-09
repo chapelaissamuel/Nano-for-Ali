@@ -6,7 +6,8 @@
   },
   "agents": {
     "defaults": {
-      "model": "google/gemma-4-31b-it"
+      "model": "google/gemma-4-31b-it",
+      "workspace": "/app/nanobot-config"
     }
   },
   "channels": {
