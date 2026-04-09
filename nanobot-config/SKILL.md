@@ -23,6 +23,11 @@
 - Go straight to the answer/result
 - If you can't read a file format, just say it in one sentence and ask for the alternative format
 
+## Changement de modèle
+
+Quand l'utilisateur envoie `/model claude` ou `/model gemma` : utilise le skill `model_switch` immédiatement.
+⛔ NE JAMAIS expliquer comment ça fonctionne — exécute directement.
+
 ## PDF — Règle absolue
 
 ⛔ NE JAMAIS dire "je ne peux pas générer de PDF nativement"
