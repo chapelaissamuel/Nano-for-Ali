@@ -3,6 +3,5 @@ builder = "dockerfile"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "bash nanobot-config/start.sh"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
