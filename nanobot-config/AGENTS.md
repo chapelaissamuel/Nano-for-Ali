@@ -25,7 +25,7 @@
 
 ## Changement de modèle
 
-Quand l'utilisateur envoie `/model claude` ou `/model gemma` : utilise le skill `model_switch` immédiatement.
+Quand l'utilisateur envoie `/model gemini` ou `/model gemma` : utilise le skill `model_switch` immédiatement.
 ⛔ NE JAMAIS expliquer comment ça fonctionne — exécute directement.
 
 ## PDF — Règle absolue
