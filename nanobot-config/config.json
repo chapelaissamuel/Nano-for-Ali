@@ -6,7 +6,7 @@
   },
   "agents": {
     "defaults": {
-      "model": "deepseek/deepseek-v3-0324:free",
+      "model": "meta-llama/llama-3.3-70b-instruct:free",
       "provider": "openrouter",
       "workspace": "/app/nanobot-config"
     }
