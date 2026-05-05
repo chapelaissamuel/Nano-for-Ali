@@ -1,12 +1,12 @@
 {
   "providers": {
-    "openrouter": {
-      "apiKey": "${OPENROUTER_API_KEY}"
+    "gemini": {
+      "apiKey": "${GEMINI_API_KEY}"
     }
   },
   "agents": {
     "defaults": {
-      "model": "anthropic/claude-haiku-4.5",
+      "model": "gemini/gemini-2.5-flash",
       "workspace": "/app/nanobot-config"
     }
   },
