@@ -1,12 +1,13 @@
 {
   "providers": {
-    "gemini": {
-      "apiKey": "${GEMINI_API_KEY}"
+    "openrouter": {
+      "apiKey": "${OPENROUTER_API_KEY}"
     }
   },
   "agents": {
     "defaults": {
-      "model": "gemini-2.0-flash",
+      "model": "deepseek/deepseek-v3-0324:free",
+      "provider": "openrouter",
       "workspace": "/app/nanobot-config"
     }
   },
