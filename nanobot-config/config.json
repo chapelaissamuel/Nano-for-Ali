@@ -16,5 +16,22 @@
       "token": "${TELEGRAM_BOT_TOKEN}",
       "allowFrom": ["*"]
     }
-  }
+  },
+  "cron": [
+    {
+      "schedule": "0 8 * * *",
+      "timezone": "Europe/Paris",
+      "message": "Bonjour Sam. Comment tu te sens ce matin ?"
+    },
+    {
+      "schedule": "0 14 * * *",
+      "timezone": "Europe/Paris",
+      "message": "Journal d'humeur — note de 1 à 10 ?"
+    },
+    {
+      "schedule": "30 21 * * *",
+      "timezone": "Europe/Paris",
+      "message": "Bilan du soir. Journée comment ?"
+    }
+  ]
 }
