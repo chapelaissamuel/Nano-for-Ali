@@ -7,6 +7,7 @@
   "agents": {
     "defaults": {
       "model": "gemini-2.5-flash",
+      "provider": "gemini",
       "workspace": "/app/nanobot-config"
     }
   },
@@ -14,53 +15,9 @@
     "telegram": {
       "enabled": true,
       "token": "${TELEGRAM_BOT_TOKEN}",
-      "allowFrom": ["*"]
-    }
-  },
-  "cron": [
-    {
-      "schedule": "0 8 * * *",
-      "timezone": "Europe/Paris",
-      "message": "Bonjour Sam. Comment tu te sens ce matin ?"
-    },
-    {
-      "schedule": "0 14 * * *",
-      "timezone": "Europe/Paris",
-      "message": "Journal d'humeur — note de 1 à 10 ?"
-    },
-    {
-      "schedule": "30 21 * * *",
-      "timezone": "Europe/Paris",
-      "message": "Bilan du soir. Journée comment ?"
-    }
-  ],
-  "tools": {
-    "weather": {
-      "description": "Météo actuelle et prévisions via wttr.in et Open-Meteo. Aucune clé API requise.",
-      "script": "/app/nanobot-config/skills/weather/scripts/weather.py"
-    },
-    "wikipedia": {
-      "description": "Recherche et résumés Wikipedia (FR/EN). Aucune clé API requise.",
-      "script": "/app/nanobot-config/skills/wikipedia/scripts/wikipedia.py"
-    },
-    "polymarket": {
-      "description": "Probabilités des marchés prédictifs Polymarket via Gamma API. Aucune clé API requise.",
-      "script": "/app/nanobot-config/skills/polymarket/scripts/polymarket.py"
-    },
-    "tavily_search": {
-      "description": "Recherche web IA via Tavily. Requiert TAVILY_API_KEY.",
-      "script": "/app/nanobot-config/skills/tavily_search/scripts/tavily_search.py",
-      "env": ["TAVILY_API_KEY"]
-    },
-    "news": {
-      "description": "Actualités via NewsAPI. Requiert NEWSAPI_KEY.",
-      "script": "/app/nanobot-config/skills/news/scripts/news.py",
-      "env": ["NEWSAPI_KEY"]
-    },
-    "brave_search": {
-      "description": "Recherche web indépendante via Brave Search. Requiert BRAVE_API_KEY.",
-      "script": "/app/nanobot-config/skills/brave_search/scripts/brave_search.py",
-      "env": ["BRAVE_API_KEY"]
+      "allowFrom": [
+        "*"
+      ]
     }
   }
 }
