@@ -1,6 +1,6 @@
 ---
 name: model_switch
-description: Switch the active LLM model at runtime. Supports /model claude and /model gemma commands.
+description: Switch the active LLM model at runtime. Supports /model gemini and /model gemma commands.
 metadata: {"nanobot":{"emoji":"🔀","always":true,"requires":{"bins":["python3"]}}}
 ---
 
@@ -11,8 +11,8 @@ Change le modèle IA actif sans redéploiement. Le bot redémarre automatiquemen
 ## When to use
 
 Utilise ce skill immédiatement quand l'utilisateur envoie :
-- `/model claude` — passer sur Claude Haiku 4.5 (Anthropic)
-- `/model gemma` — passer sur Gemma 4 31B (Google, modèle par défaut)
+- `/model gemini` — passer sur Gemini 2.5 Flash (défaut)
+- `/model gemma` — passer sur Gemma 3 27B (Google, open-weights)
 - `/model` suivi de tout autre mot-clé lié à un changement de modèle
 
 ## Séquence exacte
@@ -21,19 +21,19 @@ Utilise ce skill immédiatement quand l'utilisateur envoie :
 python3 /app/nanobot-config/skills/model_switch/scripts/switch_model.py <cible>
 ```
 
-Où `<cible>` est `claude` ou `gemma`.
+Où `<cible>` est `gemini` ou `gemma`.
 
 ## Modèles disponibles
 
 | Commande | Modèle | Description |
 |---|---|---|
-| `/model gemma` | `google/gemma-4-31b-it` | Défaut — 31B, contexte 262k, rapide |
-| `/model claude` | `anthropic/claude-haiku-4.5` | Claude Haiku 4.5, excellent pour la rédaction |
+| `/model gemini` | `gemini/gemini-2.5-flash` | Défaut — Gemini 2.5 Flash, rapide et intelligent |
+| `/model gemma` | `gemini/gemma-3-27b-it` | Gemma 3 27B, open-weights Google |
 
 ## Interprétation du résultat
 
 - Contient `✅` → confirmer le changement et dire que le bot redémarre
-- Contient `Modèle inconnu` → indiquer les commandes valides : `/model gemma` ou `/model claude`
+- Contient `Modèle inconnu` → indiquer les commandes valides : `/model gemini` ou `/model gemma`
 - Code de sortie 1 → signaler l'erreur
 
 ## Règles
