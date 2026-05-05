@@ -3,8 +3,8 @@
 switch_model.py — Change le modèle LLM actif dans config.json et redémarre nanobot.
 
 Usage:
-  python3 switch_model.py claude   → anthropic/claude-haiku-4.5
-  python3 switch_model.py gemma    → google/gemma-4-31b-it
+  python3 switch_model.py gemini   → gemini/gemini-2.5-flash
+  python3 switch_model.py gemma    → gemini/gemma-3-27b-it
 
 Le processus nanobot (PID 1) est tué 3 secondes après la réponse.
 Railway relance automatiquement avec le nouveau modèle.
@@ -17,8 +17,8 @@ import subprocess
 CONFIG_PATH = "/app/nanobot-config/config.json"
 
 MODELS = {
-    "claude": "anthropic/claude-haiku-4.5",
-    "gemma":  "google/gemma-4-31b-it",
+    "gemini": "gemini/gemini-2.5-flash",
+    "gemma":  "gemini/gemma-3-27b-it",
 }
 
 def main():
@@ -26,7 +26,7 @@ def main():
 
     if target not in MODELS:
         print(f"Modèle inconnu : '{target}'")
-        print(f"Commandes valides : /model gemma  |  /model claude")
+        print(f"Commandes valides : /model gemini  |  /model gemma")
         sys.exit(1)
 
     new_model = MODELS[target]
@@ -54,8 +54,6 @@ def main():
     print(f"✅ Modèle changé : {current_model} → {new_model}")
     print(f"🔄 Redémarrage dans 3 secondes... (le bot sera indisponible ~15s)")
 
-    # Tuer PID 1 après 3s dans un processus détaché
-    # Railway (on_failure) relance automatiquement sur exit code non-zéro
     subprocess.Popen(
         ["bash", "-c", "sleep 3 && kill -15 1"],
         stdout=subprocess.DEVNULL,
